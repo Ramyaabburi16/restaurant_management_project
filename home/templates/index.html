@@ -1,4 +1,49 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>
+      <title>Restaurant Menu</title>
+      <style>
+        body{ font-family:Arial; margin:20px}
+        h1{color:#333;}
+        .menu-item{
+           border-bottom:1px solid #ccc;
+           padding:10px 0;
+         
+        }
+        .menu-item:last-child{ border-bottom:none;}
+        .price{ color:green;font-weight:bold ;}
+       </style>
+    </head>
+    <body>
+        <h1>Restaurant Menu</h1>
+        <div id="menu"></div>
+
+        <script>
+            fetch('/api/menu/')
+              .then(response=> response.json())
+              .then(data =>{
+                  const menuDiv = document.getElementById('menu');
+                  data.forEach(item=>{
+                      const div = document.createElement('div');
+                      div.classList.add('menu-item');
+                      div.innerHTML = `<strong>${item.name}</strong> -
+                            <span class ="price">$${item.price}</span><br>
+                            ${item.description || ''}`;
+                     menuDiv.appendChild(div);
+                
+                  });
+              
+              })
+
+             .catch(error =>{
+                 document.getElementById('menu').innerHTML =
+                 "<p>Unable to load menu at the moment.</p>";
+                 console.error(error);
+             }) 
+            
+        </script>
+    </body>
+</html>
+
+
+    
